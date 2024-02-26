@@ -1,0 +1,63 @@
+class Matrix:
+    def __init__(self, rows):
+        self.rows = rows
+        self.num_rows = len(rows)
+        self.num_cols = len(rows[0])
+
+    def __str__(self):
+        matrix_str = ""
+        for row in self.rows:
+            matrix_str += " ".join(map(str, row)) + "\n"
+        return matrix_str.strip()
+
+    def __add__(self, other):
+        if self.num_rows != other.num_rows or self.num_cols != other.num_cols:
+            raise ValueError("Розміри матриць не збігаються")
+        
+        result = []
+        for i in range(self.num_rows):
+            new_row = [x + y for x, y in zip(self.rows[i], other.rows[i])]
+            result.append(new_row)
+        return Matrix(result)
+
+    def __sub__(self, other):
+        if self.num_rows != other.num_rows or self.num_cols != other.num_cols:
+            raise ValueError("Розміри матриць не збігаються")
+
+        result = []
+        for i in range(self.num_rows):
+            new_row = [x - y for x, y in zip(self.rows[i], other.rows[i])]
+            result.append(new_row)
+        return Matrix(result)
+
+    def __mul__(self, other):
+        if self.num_cols != other.num_rows:
+            raise ValueError("Неможливо перемножити матриці з такими розмірами")
+
+        result = []
+        for i in range(self.num_rows):
+            new_row = []
+            for j in range(other.num_cols):
+                dot_product = sum(self.rows[i][k] * other.rows[k][j] for k in range(self.num_cols))
+                new_row.append(dot_product)
+            result.append(new_row)
+        return Matrix(result)
+
+
+# Приклад використання
+matrix1 = Matrix([[1, 2, 3], [4, 5, 6]])
+matrix2 = Matrix([[7, 8, 9], [10, 11, 12]])
+
+# Додавання матриць
+print("Додавання матриць:")
+print(matrix1 + matrix2)
+
+# Віднімання матриць
+print("Віднімання матриць:")
+print(matrix1 - matrix2)
+
+# Множення матриць
+matrix3 = Matrix([[1, 2], [3, 4], [5, 6]])
+matrix4 = Matrix([[7, 8, 9], [10, 11, 12]])
+print("Множення матриць:")
+print(matrix3 * matrix4)
