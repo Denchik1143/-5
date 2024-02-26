@@ -1,0 +1,35 @@
+class Order:
+    def __init__(self, products, quantities, prices):
+        self.__products = products
+        self.__quantities = quantities
+        self.__prices = prices
+
+    def get_total_cost(self):
+        total_cost = sum([quantity * price for quantity, price in zip(self.__quantities, self.__prices)])
+        return total_cost
+
+
+class Customer:
+    def __init__(self, name):
+        self.name = name
+
+    def place_order(self, products, quantities, prices, order_processor):
+        order = Order(products, quantities, prices)
+        order_processor.process_order(order)
+
+
+class OrderProcessor:
+    def process_order(self, order):
+        total_cost = order.get_total_cost()
+        print("Order processed. Total cost:", total_cost)
+
+
+# Приклад використання
+customer1 = Customer("John")
+order_processor = OrderProcessor()
+
+products = ["Laptop", "Mouse", "Keyboard"]
+quantities = [1, 2, 1]
+prices = [800, 20, 50]
+
+customer1.place_order(products, quantities, prices, order_processor)
